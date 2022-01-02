@@ -478,7 +478,7 @@ main() {
           CXX="/usr/bin/clang++ -fPIE" \
           CPP=/usr/bin/clang-cpp \
           LD=/usr/bin/ld.lld \
-          cmake -GNinja -DFIPS=1  ..
+          cmake -GNinja -DBUILD_SHARED_LIBS=1 -DFIPS=1  ..
           ninja
         popd #build
 
@@ -551,7 +551,7 @@ main() {
 
         if [ -n "$BORINGSSL_VER" ]; then
           OPENRESTY_OPTS+=(
-            "--with-openssl=$BORINGSSL_DOWNLOAD"
+#            "--with-openssl=$BORINGSSL_DOWNLOAD"
             "--with-cc-opt='-I$BORINGSSL_DOWNLOAD/.openssl/include'"
             "--with-ld-opt='-Wl,-Bsymbolic-functions -Wl,-z,relro -L$BORINGSSL_DOWNLOAD/.openssl/lib -Wl,--disable-new-dtags,-rpath,$OPENRESTY_RPATH'"
           )
@@ -571,6 +571,9 @@ main() {
           OPENRESTY_OPTS+=('--with-luajit-xcflags="-DLUAJIT_USE_VALGRIND -DLUA_USE_ASSERT -DLUA_USE_APICHECK -DLUAJIT_USE_SYSMALLOC"')
         fi
 
+        echo "will configure:"
+        echo $OPENRESTY_OPTS[*]
+        echo "-------------"
         eval ./configure ${OPENRESTY_OPTS[*]}
 
         if [ -n "$BORINGSSL_VER" ]; then
