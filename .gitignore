@@ -4,3 +4,7 @@ id_rsa.private
 kong_license.private
 *.deb
 *.rpm
+DataDome-NginxDome*/
+.DS_Store
+work/
+output/
